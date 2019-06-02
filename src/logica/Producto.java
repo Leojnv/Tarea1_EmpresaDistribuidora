@@ -1,7 +1,8 @@
 package logica;
 
 public class Producto {
-    private String codigo;
+    public static  int generatedCode = 1;
+	private String codigo;
     private String nombre;
     private String tipo; // Electronico, Comestible o Atuendo
     private double pCompra;

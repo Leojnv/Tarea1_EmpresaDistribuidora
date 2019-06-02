@@ -3,8 +3,7 @@ package logica;
 public class zProbandoLogica {
 
 	public static void main(String[] args) {
-		Almacen A1 = new Almacen("A-1", "Santiago", "Santiago", 432.10,
-				250, 0);
+		Almacen A1 = new Almacen("A-1", "Santiago", "Santiago", 432.10, 250);
 		Producto p1 = new Producto("P-1", "bla", "E", 10.00, 15.00,	40, 100, 200, "A-1");
 		Producto p2 = new Producto("P-2", "ble", "A", 10.00, 15.00,	40, 100, 200, "A-1");
 		Empresa empre = new Empresa();

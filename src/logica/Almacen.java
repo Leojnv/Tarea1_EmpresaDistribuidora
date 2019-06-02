@@ -1,6 +1,7 @@
 package logica;
 
 public class Almacen {
+	public static int generatedCode = 1;
     private String codigo;
     private String ciudad;
     private String municipio;
@@ -9,7 +10,7 @@ public class Almacen {
     private Producto[] productos;
     private int cantProd;
     
-	public Almacen(String codigo, String ciudad, String municipio, double capacidad, int superficie, int cantProd) {
+	public Almacen(String codigo, String ciudad, String municipio, double capacidad, int superficie) {
 		super();
 		this.codigo = codigo;
 		this.ciudad = ciudad;
@@ -17,7 +18,7 @@ public class Almacen {
 		this.capacidad = capacidad;
 		this.superficie = superficie;
         this.productos = new Producto[100];
-        this.cantProd = cantProd;
+        this.cantProd = 0;
 	}
 
 	public String getCodigo() {
@@ -77,8 +78,32 @@ public class Almacen {
 
 	public void insertarProducto(Producto pro) {
 		this.productos[cantProd] = pro;
+		Producto.generatedCode++;
 		cantProd++;
 	}
+	public void eliminarProducto(String codeProducto) {
+		int aux = buscarProdIndexByCode(codeProducto);
+		if (aux > -1) {
+			while(aux < this.cantProd - 1) {
+				this.productos[aux] = this.productos[aux+1];
+				aux++;
+			}
+			this.cantProd--;
+		}
+	}
 
+	public int buscarProdIndexByCode(String codeProducto) {
+		int index = -1;
+		boolean encontrado = false;
+        int i = 0;
+        while (!encontrado &&  i < this.cantProd) {
+            if(this.productos[i].getCodigo().equalsIgnoreCase(codeProducto)) {
+                encontrado = true;
+                index = i;
+            }
+            i++;
+        }
+		return index;
+	}
     
 }

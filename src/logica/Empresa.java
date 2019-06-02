@@ -29,6 +29,7 @@ public class Empresa {
     public void insertarAlmancen(Almacen alma) {
         almacenes[cantAlmacenes] = alma;
         cantAlmacenes++;
+        Almacen.generatedCode++;
     }
     public double estGananciasBruta(String codigo){
         double ganancias = 0;
@@ -48,16 +49,14 @@ public class Empresa {
          * */
         Almacen alma = buscarAlmaByCode(codigo);
         for (int i = 0; i < alma.getCantProd(); i++) {
-            if (alma.getProductos()[i].getStockReal() > alma.getProductos()[i].getStockInicial()*0.10){
-                if (alma.getProductos()[i].getDiasVenci() <= 60 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Comestibles")){
-                    ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.50 - alma.getProductos()[i].getpCompra());
-                } else if (alma.getProductos()[i].getDiasVenci() <= 75 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Atuendos")){
-                    ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.65 - alma.getProductos()[i].getpCompra());
-                } else if (alma.getProductos()[i].getDiasVenci() <= 90 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Electronicos")){
-                    ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.80 - alma.getProductos()[i].getpCompra());
-                } else {
-                    ganancias += alma.getProductos()[i].getStockReal() * (alma.getProductos()[i].getpVenta() - alma.getProductos()[i].getpCompra());
-                }
+            if (alma.getProductos()[i].getDiasVenci() <= 60 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Comestibles")){
+                ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.50 - alma.getProductos()[i].getpCompra());
+            } else if (alma.getProductos()[i].getDiasVenci() <= 75 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Atuendos")){
+                ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.65 - alma.getProductos()[i].getpCompra());
+            } else if (alma.getProductos()[i].getDiasVenci() <= 90 && alma.getProductos()[i].getTipo().equalsIgnoreCase("Electronicos")){
+                ganancias += alma.getProductos()[i].getStockReal() *(alma.getProductos()[i].getpVenta()*0.80 - alma.getProductos()[i].getpCompra());
+            } else {
+                ganancias += alma.getProductos()[i].getStockReal() * (alma.getProductos()[i].getpVenta() - alma.getProductos()[i].getpCompra());
             }
         }
         return ganancias;
@@ -124,4 +123,30 @@ public class Empresa {
 
         return codigoAlma;
     }
+
+	public void eliminarAlmacen(String codigoAlma) {
+		int aux = buscarAlmaIndexByCode(codigoAlma);
+		if (aux > -1) {
+			while(aux < cantAlmacenes - 1) {
+				almacenes[aux] = almacenes[aux+1];
+				aux++;
+			}
+			cantAlmacenes--;
+		}
+		
+	}
+
+	public int buscarAlmaIndexByCode(String codigoAlma) {
+		int index = -1;
+		boolean encontrado = false;
+        int i = 0;
+        while (!encontrado &&  i < this.cantAlmacenes) {
+            if(this.almacenes[i].getCodigo().equalsIgnoreCase(codigoAlma)) {
+                encontrado = true;
+                index = i;
+            }
+            i++;
+        }
+		return index;
+	}
 }

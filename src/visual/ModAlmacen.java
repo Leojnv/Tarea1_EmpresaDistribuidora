@@ -20,6 +20,10 @@ import java.awt.event.ActionEvent;
 
 public class ModAlmacen extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtCodigo;
 	private JTextField txtCiudad;
@@ -27,6 +31,7 @@ public class ModAlmacen extends JDialog {
 	private JSpinner spnSuperficie;
 	private JSpinner spnCapacidad;
 	private Almacen miAlma;
+	@SuppressWarnings("unused")
 	private Empresa miEmpre;
 
 	/**
@@ -123,7 +128,7 @@ public class ModAlmacen extends JDialog {
 						miAlma.setSuperficie(superficie);
 						JOptionPane.showMessageDialog(null, "Operacion exitosa", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
-						main.loadTableAlma();
+						Principal.loadTableAlma();
 					}
 				});
 				btnModificar.setActionCommand("OK");

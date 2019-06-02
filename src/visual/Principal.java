@@ -32,15 +32,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JInternalFrame;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SpinnerNumberModel;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
+import javax.swing.border.LineBorder;
 
-public class main extends JFrame {
+public class Principal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private boolean auxAlmacenes = false;
 	private boolean auxProductos = false;
@@ -55,6 +57,7 @@ public class main extends JFrame {
 	private JTable table1;
 	private static DefaultTableModel model1;
 	private static Object[] fila1;
+	@SuppressWarnings("unused")
 	private static Almacen miAlma;
 	private JPanel Almacenes;
 	private JPanel Productos;
@@ -64,14 +67,22 @@ public class main extends JFrame {
 	private JTextField txtNombreP;
 	private JTextField txtPrecioVenta;
 	private JTextField txtPrecioCompra;
-	private JComboBox cbxTipo;
+	private JComboBox<String> cbxTipo;
 	private JSpinner spnStockInial;
 	private JSpinner spnVencimiento;
-	private static JComboBox cbxAlmacen;
+	private static JComboBox<String> cbxAlmacen;
 	private JTable table;
 	private static DefaultTableModel model;
 	private static Object[] fila;
 	private JButton btnRegistrar;
+	private static JComboBox<String> cbxAlmacenB;
+	private JTextField txtGananciaBruta;
+	private JTextField txtPerdidas;
+	private JButton btnBuscarAlmacen;
+	private JSpinner spnCantidad;
+	private JComboBox<String> cbxProductos;
+	private JTextField txtCantByType;
+	private JComboBox<String> cbxProdType;
 
 
 	/**
@@ -82,7 +93,7 @@ public class main extends JFrame {
 			public void run() {
 				try {
 					Empresa empre = new Empresa();
-					main frame = new main(empre);
+					Principal frame = new Principal(empre);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -94,8 +105,8 @@ public class main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public main(Empresa empre) {
-		this.miEmpresa = empre;
+	public Principal(Empresa empre) {
+		Principal.miEmpresa = empre;
 		setBackground(Color.WHITE);
 		setResizable(false);
 		setTitle("Empresa");
@@ -113,21 +124,192 @@ public class main extends JFrame {
 		contentPane.add(Principal);
 		Principal.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 0, 458, 345);
-		Principal.add(panel_2);
+		JPanel Perdidas = new JPanel();
+		Perdidas.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		Perdidas.setBounds(0, 0, 458, 345);
+		Principal.add(Perdidas);
+		Perdidas.setLayout(null);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(458, 0, 455, 345);
-		Principal.add(panel_3);
+		JLabel lblPerdidas = new JLabel("Perdidas por Productos Vencidos");
+		lblPerdidas.setToolTipText("");
+		lblPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPerdidas.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblPerdidas.setBounds(10, 116, 438, 20);
+		Perdidas.add(lblPerdidas);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(0, 345, 458, 345);
-		Principal.add(panel_4);
+		txtPerdidas = new JTextField();
+		txtPerdidas.setText("0.00");
+		txtPerdidas.setEditable(false);
+		txtPerdidas.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPerdidas.setBounds(131, 147, 196, 20);
+		Perdidas.add(txtPerdidas);
+		txtPerdidas.setColumns(10);
 		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(458, 345, 455, 345);
-		Principal.add(panel_5);
+		JButton btnActualizar_1 = new JButton("Actualizar");
+		btnActualizar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean cierto = false;
+				int i = 0;
+				while (!cierto && i<miEmpresa.getCantAlmacenes()) {
+					if (miEmpresa.getAlmacenes()[i].getCantProd() > 0) {
+						cierto = true;
+					}
+					i++;
+				}
+				if (cierto) {
+					double aux = miEmpresa.perdidas();
+					txtPerdidas.setText(String.valueOf(aux));
+				}				
+			}
+		});
+		btnActualizar_1.setBounds(166, 178, 125, 23);
+		Perdidas.add(btnActualizar_1);
+		
+		JPanel listaPdado = new JPanel();
+		listaPdado.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		listaPdado.setBounds(458, 0, 458, 345);
+		Principal.add(listaPdado);
+		listaPdado.setLayout(null);
+		
+		JLabel lblListTipo = new JLabel("Productos por Tipo");
+		lblListTipo.setToolTipText("");
+		lblListTipo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblListTipo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblListTipo.setBounds(117, 80, 224, 20);
+		listaPdado.add(lblListTipo);
+		
+		JLabel lblTipoDeProducto = new JLabel("Tipo de Producto:");
+		lblTipoDeProducto.setBounds(148, 111, 162, 14);
+		listaPdado.add(lblTipoDeProducto);
+		
+		cbxProdType = new JComboBox<String>();
+		cbxProdType.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Comestibles", "Electronicos", "Atuendos"}));
+		cbxProdType.setBounds(148, 136, 162, 20);
+		listaPdado.add(cbxProdType);
+		
+		JLabel lblCantidad = new JLabel("Cantidad:");
+		lblCantidad.setBounds(148, 167, 162, 14);
+		listaPdado.add(lblCantidad);
+		
+		txtCantByType = new JTextField();
+		txtCantByType.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCantByType.setText("0");
+		txtCantByType.setEditable(false);
+		txtCantByType.setBounds(148, 192, 162, 20);
+		listaPdado.add(txtCantByType);
+		txtCantByType.setColumns(10);
+		
+		JButton btnUpdateCant = new JButton("Actualizar");
+		btnUpdateCant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String tipo = cbxProdType.getSelectedItem().toString();
+				int cant = miEmpresa.cantProdByType(tipo);
+				txtCantByType.setText(String.valueOf(cant));
+			}
+		});
+		btnUpdateCant.setBounds(166, 223, 125, 23);
+		listaPdado.add(btnUpdateCant);
+		
+		JPanel gBruta = new JPanel();
+		gBruta.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		gBruta.setBounds(0, 345, 458, 345);
+		Principal.add(gBruta);
+		gBruta.setLayout(null);
+		
+		JLabel lblGananciaBruta = new JLabel("Ganancia Bruta");
+		lblGananciaBruta.setBounds(166, 64, 125, 20);
+		gBruta.add(lblGananciaBruta);
+		lblGananciaBruta.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblGananciaBruta.setToolTipText("");
+		lblGananciaBruta.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JLabel lblAlmacen_1 = new JLabel("Almacen:");
+		lblAlmacen_1.setBounds(166, 95, 125, 14);
+		gBruta.add(lblAlmacen_1);
+		
+		cbxAlmacenB = new JComboBox<String>();
+		cbxAlmacenB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				loadAlmacenesB();
+			}
+		});
+		cbxAlmacenB.setBounds(166, 120, 125, 20);
+		cbxAlmacenB.insertItemAt(new String("<Seleccione>"),0);
+		cbxAlmacenB.setSelectedIndex(0);
+		gBruta.add(cbxAlmacenB);
+		
+		JLabel lblGanancias = new JLabel("Ganancias:");
+		lblGanancias.setBounds(166, 151, 125, 14);
+		gBruta.add(lblGanancias);
+		
+		txtGananciaBruta = new JTextField();
+		txtGananciaBruta.setHorizontalAlignment(SwingConstants.CENTER);
+		txtGananciaBruta.setText("0.00");
+		txtGananciaBruta.setEditable(false);
+		txtGananciaBruta.setBounds(166, 179, 125, 20);
+		gBruta.add(txtGananciaBruta);
+		txtGananciaBruta.setColumns(10);
+		
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbxAlmacenB.getSelectedIndex() != 0) {
+					Almacen aux = miEmpresa.buscarAlmaByCode(cbxAlmacenB.getSelectedItem().toString());
+					if (aux.getCantProd() > 0) {
+						txtGananciaBruta.setText(String.valueOf(miEmpresa.estGananciasBruta(cbxAlmacenB.getSelectedItem().toString())));
+					}
+				}
+			}
+		});
+		btnActualizar.setBounds(166, 210, 125, 20);
+		gBruta.add(btnActualizar);
+		
+		JPanel despachar = new JPanel();
+		despachar.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		despachar.setBounds(458, 345, 458, 345);
+		Principal.add(despachar);
+		despachar.setLayout(null);
+		
+		JLabel lblDespachar = new JLabel("Despachar Producto");
+		lblDespachar.setToolTipText("");
+		lblDespachar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDespachar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblDespachar.setBounds(141, 63, 175, 20);
+		despachar.add(lblDespachar);
+		
+		JLabel lblProducto = new JLabel("Producto:");
+		lblProducto.setBounds(141, 94, 175, 14);
+		despachar.add(lblProducto);
+		
+		cbxProductos = new JComboBox<String>();
+		cbxProductos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				loadProductosB();
+			}
+		});
+		cbxProductos.setBounds(141, 119, 175, 20);
+		despachar.add(cbxProductos);
+		
+		JLabel lblCantidadDeseada = new JLabel("Cantidad deseada:");
+		lblCantidadDeseada.setBounds(141, 150, 175, 14);
+		despachar.add(lblCantidadDeseada);
+		
+		spnCantidad = new JSpinner();
+		spnCantidad.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		spnCantidad.setBounds(141, 175, 175, 20);
+		despachar.add(spnCantidad);
+		
+		btnBuscarAlmacen = new JButton("Buscar Almacen");
+		btnBuscarAlmacen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String codigoAlmaR = miEmpresa.recogerProd(cbxProductos.getSelectedItem().toString(), Integer.valueOf(spnCantidad.getValue().toString()));
+				JOptionPane.showMessageDialog(null, "El producto deseado se puede recoger en el almacen: " + codigoAlmaR, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		btnBuscarAlmacen.setBounds(154, 206, 149, 23);
+		despachar.add(btnBuscarAlmacen);
 
 		JPanel MenuPanel = new JPanel();
 		MenuPanel.setBackground(Color.GRAY);
@@ -159,6 +341,7 @@ public class main extends JFrame {
 				Productos.setVisible(false);
 				Option2.setBackground(Color.gray);
 				auxProductos = false;
+				Principal.setVisible(false);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -175,7 +358,7 @@ public class main extends JFrame {
 		lblEmpresaQsy.setBounds(10, 11, 340, 52);
 		MenuPanel.add(lblEmpresaQsy);
 		Option1.setBackground(Color.gray);
-		Option1.setBounds(0, 120, 360, 52);
+		Option1.setBounds(0, 120, 358, 52);
 		MenuPanel.add(Option1);
 		Option1.setLayout(new BorderLayout(0, 0));
 
@@ -200,6 +383,7 @@ public class main extends JFrame {
 				Almacenes.setVisible(false);
 				Option1.setBackground(Color.gray);
 				auxAlmacenes = false;
+				Principal.setVisible(false);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -209,7 +393,7 @@ public class main extends JFrame {
 			}
 		});
 		Option2.setBackground(Color.GRAY);
-		Option2.setBounds(0, 181, 360, 52);
+		Option2.setBounds(0, 181, 358, 52);
 		MenuPanel.add(Option2);
 		Option2.setLayout(new BorderLayout(0, 0));
 
@@ -390,6 +574,10 @@ public class main extends JFrame {
 																																																						Option2.setBackground(Color.gray);
 																																																						auxAlmacenes = false;
 																																																						auxProductos = false;
+																																																						Principal.setVisible(true);
+																																																						loadAlmacenesB();
+																																																						loadProductosB();
+																																																						cbxProdType.setSelectedIndex(0);
 																																																					}
 																																																				});
 																																																				panel.add(btnPrincipal);
@@ -410,6 +598,10 @@ public class main extends JFrame {
 				Option2.setBackground(Color.gray);
 				auxAlmacenes = false;
 				auxProductos = false;
+				Principal.setVisible(true);
+				loadAlmacenesB();
+				loadProductosB();
+				cbxProdType.setSelectedIndex(0);
 			}
 		});
 		panel_1.add(button);
@@ -529,7 +721,7 @@ public class main extends JFrame {
 		lblAlmacen.setBounds(10, 216, 62, 14);
 		panelInfoProd.add(lblAlmacen);
 
-		cbxAlmacen = new JComboBox();
+		cbxAlmacen = new JComboBox<String>();
 		cbxAlmacen.setBounds(70, 213, 169, 20);
 		panelInfoProd.add(cbxAlmacen);
 
@@ -546,8 +738,8 @@ public class main extends JFrame {
 		lblTipo.setBounds(10, 92, 169, 14);
 		panelInfoProd.add(lblTipo);
 
-		cbxTipo = new JComboBox();
-		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Electronicos", "Comestibles", "Atuendos"}));
+		cbxTipo = new JComboBox<String>();
+		cbxTipo.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Electronicos", "Comestibles", "Atuendos"}));
 		cbxTipo.setBounds(10, 117, 169, 20);
 		panelInfoProd.add(cbxTipo);
 
@@ -614,6 +806,26 @@ public class main extends JFrame {
 		}
 		cbxAlmacen.insertItemAt(new String("<Seleccione>"),0);
 		cbxAlmacen.setSelectedIndex(0);
+
+	}
+	public void loadAlmacenesB() {
+		cbxAlmacenB.removeAllItems();
+		for (int i = 0; i < miEmpresa.getCantAlmacenes(); i++) {
+			cbxAlmacenB.addItem(new String(miEmpresa.getAlmacenes()[i].getCodigo()));
+		}
+		cbxAlmacenB.insertItemAt(new String("<Seleccione>"),0);
+		cbxAlmacenB.setSelectedIndex(0);
+
+	}
+	public void loadProductosB() {
+		cbxProductos.removeAllItems();
+		for (int i = 0; i < miEmpresa.getCantAlmacenes(); i++) {
+			for (int j = 0; j < miEmpresa.getAlmacenes()[i].getCantProd(); j++) {
+				cbxProductos.addItem(new String(miEmpresa.getAlmacenes()[i].getProductos()[j].getCodigo()));
+			}
+		}
+		cbxProductos.insertItemAt(new String("<Seleccione>"),0);
+		cbxProductos.setSelectedIndex(0);
 
 	}
 

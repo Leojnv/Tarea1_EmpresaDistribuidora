@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import logica.Almacen;
 import logica.Empresa;
 import logica.Producto;
 
@@ -23,6 +22,10 @@ import javax.swing.DefaultComboBoxModel;
 
 public class ModProducto extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtCodigo;
 	private JTextField txtNombre;
@@ -30,8 +33,8 @@ public class ModProducto extends JDialog {
 	private JTextField txtpCompra;
 	private Producto miProducto;
 	private Empresa miEmpresa;
-	private JComboBox cbxAlmacen;
-	private JComboBox cbxTipo;
+	private JComboBox<String> cbxAlmacen;
+	private JComboBox<String> cbxTipo;
 	private JSpinner spnStockReal;
 	private JSpinner spnVenci;
 	
@@ -72,7 +75,7 @@ public class ModProducto extends JDialog {
 				panel.add(label);
 			}
 			{
-				cbxAlmacen = new JComboBox();
+				cbxAlmacen = new JComboBox<String>();
 				cbxAlmacen.setBounds(70, 213, 169, 20);
 				panel.add(cbxAlmacen);
 			}
@@ -93,8 +96,8 @@ public class ModProducto extends JDialog {
 				panel.add(label);
 			}
 			{
-				cbxTipo = new JComboBox();
-				cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Electronicos", "Comestibles", "Atuendos"}));
+				cbxTipo = new JComboBox<String>();
+				cbxTipo.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Electronicos", "Comestibles", "Atuendos"}));
 				cbxTipo.setBounds(10, 117, 169, 20);
 				panel.add(cbxTipo);
 			}
@@ -171,7 +174,7 @@ public class ModProducto extends JDialog {
 						
 						JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
 						dispose();
-						main.loadTableProd();
+						Principal.loadTableProd();
 					}
 				});
 				btnModificar.setActionCommand("OK");

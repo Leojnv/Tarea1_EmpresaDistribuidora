@@ -38,6 +38,7 @@ public class ModAlmacen extends JDialog {
 	 * Create the dialog.
 	 */
 	public ModAlmacen(Empresa empre, Almacen alma) {
+		setResizable(false);
 		this.miEmpre = empre;
 		this.miAlma = alma;
 		setTitle("Modificar Almacen");
@@ -120,7 +121,10 @@ public class ModAlmacen extends JDialog {
 						String municipio = txtMunicipio.getText().toString();
 						double capacidad = Double.valueOf(spnCapacidad.getValue().toString());
 						int superficie = Integer.valueOf(spnSuperficie.getValue().toString());
-						
+						if (codigo.equalsIgnoreCase("") || ciudad.equalsIgnoreCase("") || municipio.equalsIgnoreCase("") || capacidad < 1 ||
+								superficie < 1) {
+							JOptionPane.showMessageDialog(null, "Revise los campos", "Informacion", JOptionPane.WARNING_MESSAGE, null);
+						}else {
 						miAlma.setCodigo(codigo);
 						miAlma.setCiudad(ciudad);
 						miAlma.setMunicipio(municipio);
@@ -129,6 +133,7 @@ public class ModAlmacen extends JDialog {
 						JOptionPane.showMessageDialog(null, "Operacion exitosa", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 						Principal.loadTableAlma();
+						}
 					}
 				});
 				btnModificar.setActionCommand("OK");

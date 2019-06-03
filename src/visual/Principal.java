@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
 
@@ -109,7 +110,7 @@ public class Principal extends JFrame {
 		Principal.miEmpresa = empre;
 		setBackground(Color.WHITE);
 		setResizable(false);
-		setTitle("Empresa");
+		setTitle("Estudio de Mercado");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		setLocationRelativeTo(null);
@@ -351,11 +352,13 @@ public class Principal extends JFrame {
 			}
 		});
 
-		JLabel lblEmpresaQsy = new JLabel("Empresa QSY");
+		JLabel lblEmpresaQsy = new JLabel("");
+		java.awt.Image img = new ImageIcon(this.getClass().getResource("/logo.png")).getImage();
+		lblEmpresaQsy.setIcon(new ImageIcon(img));
 		lblEmpresaQsy.setForeground(Color.WHITE);
 		lblEmpresaQsy.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmpresaQsy.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
-		lblEmpresaQsy.setBounds(10, 11, 340, 52);
+		lblEmpresaQsy.setBounds(10, 347, 340, 200);
 		MenuPanel.add(lblEmpresaQsy);
 		Option1.setBackground(Color.gray);
 		Option1.setBounds(0, 120, 358, 52);
@@ -445,10 +448,10 @@ public class Principal extends JFrame {
 														JButton btnEliminar = new JButton("Eliminar");
 														btnEliminar.setEnabled(false);
 														btnEliminar.addActionListener(new ActionListener() {
-															public void actionPerformed(ActionEvent e) {
+															public void actionPerformed(ActionEvent e) {													
 																miEmpresa.eliminarAlmacen(codigoAlma);
 																JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
-																loadTableAlma();
+																loadTableAlma();																
 																btnEliminar.setEnabled(false);
 																btnModificar.setEnabled(false);
 																btnRegistrar.setEnabled(true);
@@ -495,11 +498,17 @@ public class Principal extends JFrame {
 																											String municipio = txtMunicipio.getText().toString();
 																											double capacidad = Double.valueOf(spnCapacidad.getValue().toString());
 																											int superficie = Integer.valueOf(spnSuperficie.getValue().toString());
-																											Almacen aux = new Almacen(codigo, ciudad, municipio, capacidad, superficie);
-																											miEmpresa.insertarAlmancen(aux);
-																											JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
-																											loadTableAlma();
-																											cleanAlma();
+																											
+																											if (codigo.equalsIgnoreCase("") || ciudad.equalsIgnoreCase("") || municipio.equalsIgnoreCase("") || capacidad < 1 ||
+																													superficie < 1) {
+																												JOptionPane.showMessageDialog(null, "Revise los campos", "Informacion", JOptionPane.WARNING_MESSAGE, null);
+																											}else {
+																												Almacen aux = new Almacen(codigo, ciudad, municipio, capacidad, superficie);
+																												miEmpresa.insertarAlmancen(aux);
+																												JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
+																												loadTableAlma();
+																												cleanAlma();
+																											}
 																											if (miEmpresa.getCantAlmacenes() == 3) {
 																												btnRegistrar.setEnabled(false);
 																												JOptionPane.showMessageDialog(null, "No se pueden agregar mas almacenes", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
@@ -578,6 +587,7 @@ public class Principal extends JFrame {
 																																																						loadAlmacenesB();
 																																																						loadProductosB();
 																																																						cbxProdType.setSelectedIndex(0);
+																																																						tabbedPane.setSelectedIndex(0);
 																																																					}
 																																																				});
 																																																				panel.add(btnPrincipal);
@@ -589,6 +599,11 @@ public class Principal extends JFrame {
 		FlowLayout flowLayout_1 = (FlowLayout) panel_1.getLayout();
 		flowLayout_1.setAlignment(FlowLayout.RIGHT);
 		Productos.add(panel_1, BorderLayout.SOUTH);
+		
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_1.setBorder(null);
+		tabbedPane_1.setBackground(Color.WHITE);
+		Productos.add(tabbedPane_1, BorderLayout.CENTER);
 
 		JButton button = new JButton("Volver a la pagina principal");
 		button.addActionListener(new ActionListener() {
@@ -602,14 +617,10 @@ public class Principal extends JFrame {
 				loadAlmacenesB();
 				loadProductosB();
 				cbxProdType.setSelectedIndex(0);
+				tabbedPane_1.setSelectedIndex(0);
 			}
 		});
 		panel_1.add(button);
-
-		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setBorder(null);
-		tabbedPane_1.setBackground(Color.WHITE);
-		Productos.add(tabbedPane_1, BorderLayout.CENTER);
 
 		JPanel ListadoProductos = new JPanel();
 		ListadoProductos.setBackground(Color.LIGHT_GRAY);
@@ -693,11 +704,16 @@ public class Principal extends JFrame {
 				int diasVenci = Integer.valueOf(spnVencimiento.getValue().toString());
 				String almaCode = cbxAlmacen.getSelectedItem().toString();
 				Almacen aux = miEmpresa.buscarAlmaByCode(almaCode);
-				Producto pro = new Producto(codigo, nombre, tipo, pCompra, pVenta, diasVenci, stockInicial, stockInicial, almaCode);
-				aux.insertarProducto(pro);
-				JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
-				loadTableProd();
-				cleanProd();
+				if (codigo.equalsIgnoreCase("") || nombre.equalsIgnoreCase("") || tipo.equalsIgnoreCase("<Seleccione>") || pVenta < 0 || pCompra < 0 
+						|| stockInicial < 0 || diasVenci < 0 || almaCode.equalsIgnoreCase("<Seleccione>")) {
+					JOptionPane.showMessageDialog(null, "Revise los campos", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
+				}else {
+					Producto pro = new Producto(codigo, nombre, tipo, pCompra, pVenta, diasVenci, stockInicial, stockInicial, almaCode);
+					aux.insertarProducto(pro);
+					JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
+					loadTableProd();
+					cleanProd();
+				}
 			}
 		});
 		panelBtnReg.add(button_1);
@@ -748,6 +764,7 @@ public class Principal extends JFrame {
 		panelInfoProd.add(lblPrecioDeVenta);
 
 		txtPrecioVenta = new JTextField();
+		txtPrecioVenta.setText("0");
 		txtPrecioVenta.setBounds(10, 173, 169, 20);
 		panelInfoProd.add(txtPrecioVenta);
 		txtPrecioVenta.setColumns(10);
@@ -757,6 +774,7 @@ public class Principal extends JFrame {
 		panelInfoProd.add(lblPrecioDeCompra);
 
 		txtPrecioCompra = new JTextField();
+		txtPrecioCompra.setText("0");
 		txtPrecioCompra.setBounds(189, 173, 169, 20);
 		panelInfoProd.add(txtPrecioCompra);
 		txtPrecioCompra.setColumns(10);

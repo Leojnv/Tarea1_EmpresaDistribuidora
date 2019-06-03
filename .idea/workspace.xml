@@ -15,34 +15,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/logica/Empresa.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-213">
+            <state relative-caret-position="17">
               <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/visual/Principal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="785" column="26" lean-forward="true" selection-start-line="785" selection-start-column="26" selection-end-line="785" selection-end-column="26" />
-              <folding>
-                <element signature="e#5549#5657#0" expanded="true" />
-                <element signature="e#5656#5657#0" expanded="true" />
-                <element signature="e#7489#7597#0" expanded="true" />
-                <element signature="e#7596#7597#0" expanded="true" />
-                <element signature="e#9157#9158#0" expanded="true" />
-                <element signature="e#9207#9208#0" expanded="true" />
-                <element signature="e#10465#10466#0" expanded="true" />
-                <element signature="e#10515#10516#0" expanded="true" />
-                <element signature="e#13934#14297#0" expanded="true" />
-                <element signature="e#14296#14297#0" expanded="true" />
-                <element signature="e#24215#24520#0" expanded="true" />
-                <element signature="e#24519#24520#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="286">
+              <caret line="694" column="67" selection-start-line="694" selection-start-column="67" selection-end-line="694" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -66,6 +52,7 @@
         <option value="$PROJECT_DIR$/src/logica/Almacen.java" />
         <option value="$PROJECT_DIR$/src/logica/zProbandoLogica.java" />
         <option value="$PROJECT_DIR$/src/logica/Empresa.java" />
+        <option value="$PROJECT_DIR$/src/visual/Principal.java" />
       </list>
     </option>
   </component>
@@ -86,6 +73,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -114,7 +102,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -179,7 +166,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="886" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13560411" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13688946" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -246,31 +233,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/visual/Main.java" />
     <entry file="file://$PROJECT_DIR$/src/visual/Main.jfd" />
-    <entry file="file://$PROJECT_DIR$/src/visual/Principal.java">
+    <entry file="file://$PROJECT_DIR$/src/logica/Empresa.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="785" column="26" lean-forward="true" selection-start-line="785" selection-start-column="26" selection-end-line="785" selection-end-column="26" />
-          <folding>
-            <element signature="e#5549#5657#0" expanded="true" />
-            <element signature="e#5656#5657#0" expanded="true" />
-            <element signature="e#7489#7597#0" expanded="true" />
-            <element signature="e#7596#7597#0" expanded="true" />
-            <element signature="e#9157#9158#0" expanded="true" />
-            <element signature="e#9207#9208#0" expanded="true" />
-            <element signature="e#10465#10466#0" expanded="true" />
-            <element signature="e#10515#10516#0" expanded="true" />
-            <element signature="e#13934#14297#0" expanded="true" />
-            <element signature="e#14296#14297#0" expanded="true" />
-            <element signature="e#24215#24520#0" expanded="true" />
-            <element signature="e#24519#24520#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/logica/Empresa.java">
+    <entry file="file://$PROJECT_DIR$/src/visual/Principal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-213">
-          <caret line="73" column="9" selection-start-line="73" selection-start-column="9" selection-end-line="73" selection-end-column="9" />
+        <state relative-caret-position="286">
+          <caret line="694" column="67" selection-start-line="694" selection-start-column="67" selection-end-line="694" selection-end-column="67" />
         </state>
       </provider>
     </entry>

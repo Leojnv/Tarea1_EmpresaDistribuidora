@@ -43,6 +43,7 @@ public class ModProducto extends JDialog {
 	 * Create the dialog.
 	 */
 	public ModProducto(Empresa empre, Producto pro) {
+		setResizable(false);
 		this.miProducto = pro;
 		this.miEmpresa = empre;
 		setTitle("Modificar Producto");
@@ -162,7 +163,10 @@ public class ModProducto extends JDialog {
 						int stockInicial = Integer.valueOf(spnStockReal.getValue().toString());
 						int diasVenci = Integer.valueOf(spnVenci.getValue().toString());
 						String almaCode = cbxAlmacen.getSelectedItem().toString();
-						
+						if (codigo.equalsIgnoreCase("") || nombre.equalsIgnoreCase("") || tipo.equalsIgnoreCase("<Seleccione>") || pVenta < 0 || pCompra < 0 
+								|| stockInicial < 0 || diasVenci < 0 || almaCode.equalsIgnoreCase("<Seleccione>")) {
+							JOptionPane.showMessageDialog(null, "Revise los campos", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
+						}else {
 						miProducto.setCodigo(codigo);
 						miProducto.setNombre(nombre);
 						miProducto.setTipo(tipo);
@@ -175,6 +179,7 @@ public class ModProducto extends JDialog {
 						JOptionPane.showMessageDialog(null, "Operacion satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE, null);
 						dispose();
 						Principal.loadTableProd();
+						}
 					}
 				});
 				btnModificar.setActionCommand("OK");
